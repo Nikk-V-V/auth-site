@@ -29,12 +29,10 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const token = store.state.token
   const reqAuth = to.matched.some(record => record.meta.auth)
-  if (reqAuth && !token) {
-    next('/login')
-  } else {
-    localStorage.clear()
-    next()
-  }
+  if (reqAuth && !token) next('/login')
+  else next()
+
+  if (to.path === '/login' || to.path === 'register') localStorage.clear()
 })
 
 export default router
