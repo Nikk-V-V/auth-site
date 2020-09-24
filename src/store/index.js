@@ -15,6 +15,8 @@ export default createStore({
     async login({dispatch, commit}, {email, password}) {
       await axios.post(`http://142.93.134.108:1111/login?email=${email}&password=${password}`)
         .then(res => {
+          this.state.token = res.data.body['access_token']
+          this.state.refToken = res.data.body['refresh_token']
           localStorage.setItem('access_token', JSON.stringify(res.data.body['access_token']))
           localStorage.setItem('refresh_token', JSON.stringify(res.data.body['refresh_token']))
         })
@@ -43,6 +45,8 @@ export default createStore({
           "Authorization": `Bearer ${this.state.refToken}`
         }
       }).then(res => {
+        this.state.token = res.data.body['access_token']
+        this.state.refToken = res.data.body['refresh_token']
         localStorage.setItem('access_token', JSON.stringify(res.data.body['access_token']))
         localStorage.setItem('refresh_token', JSON.stringify(res.data.body['refresh_token']))
       })

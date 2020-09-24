@@ -2,13 +2,13 @@
   <form @submit.prevent="onSubmit">
     <div class="fields">
       <div class="field">
-        <input type="email" v-model="email" placeholder="email">
+        <input type="email" @keyup="valid" v-model="email" placeholder="email">
       </div>
       <div class="field">
-        <input type="password" v-model="password" placeholder="пароль">
+        <input type="password" @keyup="valid" v-model="password" placeholder="пароль">
       </div>
     </div>
-    <button type="submit">
+    <button :disabled="isDisabled" type="submit">
       Зареєструватися
     </button>
     <p class="small">
@@ -22,9 +22,15 @@
     name: "Register",
     data: () => ({
       email: '',
-      password: ''
+      password: '',
+      isDisabled: true
     }),
     methods: {
+      valid() {
+        this.email.trim() && this.password.trim()
+          ? this.isDisabled = false
+          :  this.isDisabled = true
+      },
       async onSubmit() {
         const formData = {email: this.email, password: this.password}
         try {
